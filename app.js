@@ -34,26 +34,26 @@ app.use('/mathify', require('./routes/mathify'));
 app.use('/auth', require('./routes/auth'));
 
 // * Production Build Code
-if (process.env.NODE_ENV === 'production') {
-    app.use(express.static('./client/build'));
-} else {
-    // ***** Error Handler Middlewares ******
-    // 404 handler
-    app.use(function (req, res, next) {
-        const notFoundError = new ExpressError('Not Found', 404);
-        return next(notFoundError);
-    });
+// if (process.env.NODE_ENV === 'production') {
+//     app.use(express.static('./client/build'));
+// }
 
-    // generic error handler
-    app.use(function (err, req, res, next) {
-        // the default status is 500 Internal Server Error
-        let status = err.status || 500;
-        let message = err.message;
+// ***** Error Handler Middlewares ******
+// 404 handler
+app.use(function (req, res, next) {
+    const notFoundError = new ExpressError('Not Found', 404);
+    return next(notFoundError);
+});
 
-        return res.status(status).json({
-            error: { message, status },
-        });
+// generic error handler
+app.use(function (err, req, res, next) {
+    // the default status is 500 Internal Server Error
+    let status = err.status || 500;
+    let message = err.message;
+
+    return res.status(status).json({
+        error: { message, status },
     });
-}
+});
 
 module.exports = app;
